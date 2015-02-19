@@ -2,6 +2,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class WcTest{
+
 	@Test
 	public void count_words_gives_5_for_string_with_5_words(){
 		Counter w = new Counter("hii i a m vikas");
@@ -41,8 +42,14 @@ public class WcTest{
 
 	@Test
 	public void getWordCount_gives_number_of_words_lines_bytes_in_string(){
-		Wc wc = new Wc(" hiii\r\ni m vikas ");
+		Wc wc = new Wc("one.txt");
 		String result = wc.getWordCount();
-		assertEquals(result, "2 4 17");
+		assertEquals(result, "\t2\t10\t48 one.txt");
+	}
+	@Test
+	public void getTextFromFile_reads_the_content_of_file(){
+		MyReader r = new MyReader();
+		String text = r.getTextFromFile("one.txt");
+		assertEquals(text, "hello, this is a good day.\r\nWhat do you think?\r\n");
 	}
 }

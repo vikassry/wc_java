@@ -1,3 +1,5 @@
+import java.io.*;
+
 class Counter{
 	String words[];
 	String str;
@@ -24,14 +26,48 @@ class Counter{
 	}
 }
 
-public class Wc{
-	private String txt;
+class MyReader{
+	public MyReader(){}
 
-	public Wc(String text){
-		this.txt = text;
+	public String getTextFromFile(String file){
+		FileReader fr = null;
+		File f = new File(file);
+		int len = (int)f.length();
+		char [] cbuff = new char[len];
+
+		try{
+			fr = new FileReader(file);
+		}
+		catch(Exception e){
+			System.out.println(">>\tFile not found..."+e);
+		}
+		BufferedReader br = new BufferedReader(fr);
+		try{
+			br.read(cbuff, 0, len);
+		}
+		catch(Exception e){
+			System.out.println("reading Errorr.."+e);
+		}
+		return String.copyValueOf(cbuff);
 	}
+}
+
+public class Wc{
+	private String file;
+	public Wc(String path){
+		this.file = path;
+	}
+	
 	public String getWordCount(){
-		Counter c = new Counter(txt);
-		return c.count_lines() + " "+ c.count_words() +" "+ c.count_bytes();
+		MyReader r = new MyReader();
+		String text = r.getTextFromFile(file);
+		Counter c = new Counter(text);
+		return "\t"+ c.count_lines() + "\t" + c.count_words() +"\t"+ c.count_bytes()+" " + file;
+	}
+	
+	public static void main(String[] args){
+		MyReader r = new MyReader();
+		Wc wc = new Wc(args[0]);
+		System.out.println(wc.getWordCount());
 	}
 }
