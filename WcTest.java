@@ -31,7 +31,7 @@ public class WcTest{
 	public void count_lines_gives_number_of_line(){
 		Counter w = new Counter("abcd \r\n wow");
 		int count = w.count_lines();
-		assertEquals(count, 2);
+		assertEquals(count, 1);
 	}
 	@Test
 	public void count_bytes_gives_number_of_bytes(){
@@ -42,14 +42,15 @@ public class WcTest{
 
 	@Test
 	public void getWordCount_gives_number_of_words_lines_bytes_in_string(){
-		Wc wc = new Wc("one.txt");
+		String input[] = {"one.txt"};
+		Wc wc = new Wc(input);
 		String result = wc.getWordCount();
-		assertEquals(result, "\t2\t10\t48 one.txt");
+		assertEquals(result, "\t2\t10\t49 one.txt");
 	}
 	@Test
 	public void getTextFromFile_reads_the_content_of_file(){
 		MyReader r = new MyReader();
 		String text = r.getTextFromFile("one.txt");
-		assertEquals(text, "hello, this is a good day.\r\nWhat do you think?\r\n");
+		assertEquals(text, "hello, this is a good day.\r\nWhat do you think?\r\n ");
 	}
 }
