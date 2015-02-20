@@ -1,5 +1,12 @@
 import java.io.*;
 
+class Counts{
+	public static int lines, words, bytes;
+	public static String file;
+	public Counts(){ }
+}
+
+
 class Counter{
 	private String words[];
 	private String str;
@@ -20,6 +27,7 @@ class Counter{
 	public int count_bytes(){
 		return str.length();
 	}
+
 }
 
 class MyReader{
@@ -52,28 +60,28 @@ public class Wc{
 	private String []in;
 	private String file;
 	private String option;
-	public Wc(String[] path){
-		in = path;
-		System.out.println(in[0]);
-
-		if(in.length>1){
-			this.option = in[0];
-			this.file = in[1];
-		}
-		else
-			this.file = in[0];
+	public Wc(String option, String file){
+			this.option = option;
+			this.file = file;
 	}
 	
-	public String getWordCount(){
+	public Counts getWordCount(){
 		MyReader r = new MyReader();
 		String text = r.getTextFromFile(file);
 		Counter c = new Counter(text);
-		return "\t"+ c.count_lines() +"\t"+ c.count_words() +"\t"+ c.count_bytes() +" "+ file;
+		Counts result = new Counts();
+		switch(option){
+			case "-l":  result.lines = c.count_lines();
+			case "-w": result.words = c.count_words();
+			case "-c": result.bytes = c.count_bytes();
+			default :  result.lines=c.count_lines(); result.words=c.count_words(); 
+					   result.bytes=c.count_bytes(); result.file=file;
+		}
+		return result;
 	}
 	
 	public static void main(String[] args){
-		MyReader r = new MyReader();
-		Wc wc = new Wc(args);
+		Wc wc = new Wc("-l",args[0]);
 		System.out.println(wc.getWordCount());
 	}
 }

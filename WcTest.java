@@ -41,11 +41,10 @@ public class WcTest{
 	}
 
 	@Test
-	public void getWordCount_gives_number_of_words_lines_bytes_in_string(){
-		String input[] = {"one.txt"};
-		Wc wc = new Wc(input);
-		String result = wc.getWordCount();
-		assertEquals(result, "\t2\t10\t49 one.txt");
+	public void getWordCount_gives_number_of_lines_in_given_file(){
+		Wc wc = new Wc("-l","one.txt");
+		Counts result = wc.getWordCount();
+		assertEquals(result.lines, 2);
 	}
 	@Test
 	public void getTextFromFile_reads_the_content_of_file(){
