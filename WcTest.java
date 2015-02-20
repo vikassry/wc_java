@@ -41,15 +41,47 @@ public class WcTest{
 	}
 
 	@Test
-	public void getWordCount_gives_number_of_lines_in_given_file(){
-		Wc wc = new Wc("-l","one.txt");
-		Counts result = wc.getWordCount();
-		assertEquals(result.lines, 2);
-	}
-	@Test
 	public void getTextFromFile_reads_the_content_of_file(){
+		String content = "hello, this is a good day.\r\nWhat do you think?\r\n"+
+						"I don't think so, because it rained heavily last night\r\nOhh! ";
 		MyReader r = new MyReader();
 		String text = r.getTextFromFile("one.txt");
-		assertEquals(text, "hello, this is a good day.\r\nWhat do you think?\r\n ");
+		assertEquals(text, content);
+	}
+	
+	@Test
+	public void getWordCount_gives_number_of_lines_in_given_file_for_l_option(){
+		Wc wc = new Wc("-l","one.txt");
+		Counts result = wc.getWordCount();
+		assertEquals(result.lines, 3);
+		assertEquals(result.words, 0);
+		assertEquals(result.bytes, 0);
+		assertEquals(result.file, "one.txt");
+	}
+	
+	@Test
+	public void getWordCount_gives_number_of_words_in_given_file_for_w_option(){
+		Wc wc = new Wc("-w","one.txt");
+		Counts result = wc.getWordCount();
+		assertEquals(result.words, 21);
+	}
+
+	@Test
+	public void getWordCount_gives_number_of_bytes_in_given_file_for_c_option(){
+		Wc wc = new Wc("-c","one.txt");
+		Counts result = wc.getWordCount();
+		assertEquals(result.bytes, 109);
+	}
+
+	@Test
+	public void getLongestLine_gives_longest_line_length(){
+		Counter c = new Counter("hello, this is a good day.\r\nWhat do you think?\r\n");
+		assertEquals(c.getLongestLine(), 26);
+	}
+
+	@Test
+	public void getShortestLine_gives_longest_line_length(){
+		Counter c = new Counter("hello, this is a good day.\r\nWhat do you think?\r\n ");
+		assertEquals(c.getShortestLine(), 1);
 	}
 }

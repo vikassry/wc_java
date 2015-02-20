@@ -1,16 +1,21 @@
 import java.io.*;
 
 class Counts{
-	public static int lines, words, bytes;
-	public static String file;
+	public int lines, words, bytes, longLine, shortLine;
+	public String file, longest, shortest;
+	
 	public Counts(){ }
+
+	public String toString(){
+		return "\t"+lines+"\t"+words+"\t"+bytes+"\t"+longLine+"\t"+shortLine+" "+file;
+	}
 }
+
 
 
 class Counter{
 	private String words[];
-	private String str;
-	private int lines, wordsCount, lineCount;
+	private String str, shortest, longest;
 	
 	public Counter(String text){
 		this.str = text;
@@ -28,6 +33,25 @@ class Counter{
 		return str.length();
 	}
 
+	public int getLongestLine(){
+		String []lines = str.split("\r\n");
+		String str="";
+		for (int i=0;i<lines.length;i++) {
+			str = (str.length() > lines[i].length()) ? str : lines[i];
+		}
+		this.longest = str;
+		return str.length();
+	}
+	
+	public int getShortestLine(){
+		String []lines = str.split("\r\n");
+		String str = lines[0];
+		for (int i=0;i<lines.length;i++) {
+			str = (str.length() < lines[i].length()) ? str : lines[i];
+		}
+		this.shortest = str;
+		return str.length();
+	}
 }
 
 class MyReader{
@@ -71,17 +95,19 @@ public class Wc{
 		Counter c = new Counter(text);
 		Counts result = new Counts();
 		switch(option){
-			case "-l":  result.lines = c.count_lines();
-			case "-w": result.words = c.count_words();
-			case "-c": result.bytes = c.count_bytes();
+			case "-l": result.lines = c.count_lines(); result.file=file; break;
+			case "-w": result.words = c.count_words(); result.file=file; break;
+			case "-c": result.bytes = c.count_bytes(); result.file=file; break;
+			case "-L": result.longLine = c.getLongestLine(); result.file=file; break;
+			case "-S": result.shortLine = c.getShortestLine(); result.file=file; break;
 			default :  result.lines=c.count_lines(); result.words=c.count_words(); 
-					   result.bytes=c.count_bytes(); result.file=file;
+						result.bytes=c.count_bytes(); result.file=file; break;
 		}
 		return result;
 	}
 	
 	public static void main(String[] args){
-		Wc wc = new Wc("-l",args[0]);
+		Wc wc = new Wc(args[0], args[1]);
 		System.out.println(wc.getWordCount());
 	}
 }
