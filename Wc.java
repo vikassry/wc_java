@@ -1,56 +1,60 @@
 import java.io.*;
 
 class Counts{
-	public int lines, words, bytes, longLine, shortLine;
-	public String file, longest, shortest;
+	public int lines, words, bytes, longLine, shortLine, count;
+	public String file, longest, shortest, str="";
 	
 	public Counts(){ }
 
 	public String toString(){
-		return "\t"+lines+"\t"+words+"\t"+bytes+"\t"+longLine+"\t"+shortLine+" "+file;
+		return "\t"+count+ str+" "+file;
 	}
 }
-
 
 
 class Counter{
 	private String words[];
 	private String str, shortest, longest;
-	
+	Counts c = new Counts();
 	public Counter(String text){
 		this.str = text;
 	}
 
-	public int count_words(){
-		return(str=="") ? 0 : str.trim().split("[ \n]").length;
+	public Counts count_words(){
+		c.count = (str=="") ? 0 : str.trim().split("[ \n]").length;
+		return c;
 	}
 
-	public int count_lines(){
-		return str.split("\r\n").length - 1;
+	public Counts count_lines(){
+		c.count = str.split("\r\n").length - 1;
+		return c;
 	}
 
-	public int count_bytes(){
-		return str.length();
+	public Counts count_bytes(){
+		c.count = str.length();
+		return c;
 	}
 
-	public int getLongestLine(){
+	public Counts getLongestLine(){
 		String []lines = str.split("\r\n");
-		String str="";
+		String str = lines[0];
 		for (int i=0;i<lines.length;i++) {
 			str = (str.length() > lines[i].length()) ? str : lines[i];
 		}
-		this.longest = str;
-		return str.length();
+		c.str = " "+ str;
+		c.count = str.length();
+		return c;
 	}
 	
-	public int getShortestLine(){
+	public Counts getShortestLine(){
 		String []lines = str.split("\r\n");
 		String str = lines[0];
 		for (int i=0;i<lines.length;i++) {
 			str = (str.length() < lines[i].length()) ? str : lines[i];
 		}
-		this.shortest = str;
-		return str.length();
+		c.str = " "+ str;
+		c.count = str.length();
+		return c;
 	}
 }
 
@@ -95,13 +99,12 @@ public class Wc{
 		Counter c = new Counter(text);
 		Counts result = new Counts();
 		switch(option){
-			case "-l": result.lines = c.count_lines(); result.file=file; break;
-			case "-w": result.words = c.count_words(); result.file=file; break;
-			case "-c": result.bytes = c.count_bytes(); result.file=file; break;
-			case "-L": result.longLine = c.getLongestLine(); result.file=file; break;
-			case "-S": result.shortLine = c.getShortestLine(); result.file=file; break;
-			default :  result.lines=c.count_lines(); result.words=c.count_words(); 
-						result.bytes=c.count_bytes(); result.file=file; break;
+			case "-l": result = c.count_lines(); result.file = file; break;
+			case "-w": result = c.count_words(); result.file = file; break;
+			case "-c": result = c.count_bytes(); result.file = file; break;
+			case "-L": result = c.getLongestLine(); result.file = file; break;
+			case "-S": result = c.getShortestLine(); result.file = file; break;
+			default : result.str = "Invalid option !!"; result.file = ""; break;
 		}
 		return result;
 	}
