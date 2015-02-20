@@ -46,7 +46,7 @@ public class WcTest{
 	@Test
 	public void getWordCount_gives_number_of_lines_in_given_file_for_l_option(){
 		Wc wc = new Wc("-l","one.txt");
-		Counts result = wc.getWordCount();
+		Storage result = wc.getWordCount();
 		assertEquals(result.count, 3);
 		assertEquals(result.words, 0);
 		assertEquals(result.bytes, 0);
@@ -56,14 +56,14 @@ public class WcTest{
 	@Test
 	public void getWordCount_gives_number_of_words_in_given_file_for_w_option(){
 		Wc wc = new Wc("-w","one.txt");
-		Counts result = wc.getWordCount();
+		Storage result = wc.getWordCount();
 		assertEquals(result.count, 21);
 	}
 
 	@Test
 	public void getWordCount_gives_number_of_bytes_in_given_file_for_c_option(){
 		Wc wc = new Wc("-c","one.txt");
-		Counts result = wc.getWordCount();
+		Storage result = wc.getWordCount();
 		assertEquals(result.count, 109);
 	}
 
@@ -84,9 +84,27 @@ public class WcTest{
 	@Test
 	public void wc_gives_invalid_option_for_wrong_option(){
 		Wc wc = new Wc("-t","one.txt");
-		Counts result = wc.getWordCount();
+		Storage result = wc.getWordCount();
 		assertEquals(result.count, 0);
 		assertEquals(result.str, "Invalid option !!");
 		assertEquals(result.file, "");
+	}
+
+	@Test
+	public void wc_gives_longest_line_with_its_length_for_L_option(){
+		Wc wc = new Wc("-L","one.txt");
+		Storage result = wc.getWordCount();
+		assertEquals(result.count, 54);
+		assertEquals(result.str, " I don't think so, because it rained heavily last night");
+		assertEquals(result.file, "one.txt");
+	}
+
+	@Test
+	public void wc_gives_longest_line_with_its_length_for_S_option(){
+		Wc wc = new Wc("-S","one.txt");
+		Storage result = wc.getWordCount();
+		assertEquals(result.count, 5);
+		assertEquals(result.str, " Ohh! ");
+		assertEquals(result.file, "one.txt");
 	}
 }

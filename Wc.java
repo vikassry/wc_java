@@ -1,13 +1,13 @@
 import java.io.*;
 
-class Counts{
+class Storage{
 	public int lines, words, bytes, longLine, shortLine, count;
 	public String file, longest, shortest, str="";
 	
-	public Counts(){ }
+	public Storage(){ }
 
 	public String toString(){
-		return "\t"+count+ str+" "+file;
+		return "\t"+ count + str+" "+file;
 	}
 }
 
@@ -15,46 +15,45 @@ class Counts{
 class Counter{
 	private String words[];
 	private String str, shortest, longest;
-	Counts c = new Counts();
+	Storage s = new Storage();
 	public Counter(String text){
 		this.str = text;
 	}
 
-	public Counts count_words(){
-		c.count = (str=="") ? 0 : str.trim().split("[ \n]").length;
-		return c;
+	public Storage count_words(){
+		s.count = (str=="") ? 0 : str.trim().split("[ \n]").length;
+		return s;
 	}
 
-	public Counts count_lines(){
-		c.count = str.split("\r\n").length - 1;
-		return c;
+	public Storage count_lines(){
+		s.count = str.split("\r\n").length - 1;
+		return s;
 	}
 
-	public Counts count_bytes(){
-		c.count = str.length();
-		return c;
+	public Storage count_bytes(){
+		s.count = str.length();
+		return s;
 	}
 
-	public Counts getLongestLine(){
+	public Storage getLongestLine(){
 		String []lines = str.split("\r\n");
 		String str = lines[0];
-		for (int i=0;i<lines.length;i++) {
+		for (int i=0;i<lines.length;i++)
 			str = (str.length() > lines[i].length()) ? str : lines[i];
-		}
-		c.str = " "+ str;
-		c.count = str.length();
-		return c;
+		s.str = " "+ str;
+		s.count = str.length();
+		return s;
 	}
 	
-	public Counts getShortestLine(){
+	public Storage getShortestLine(){
 		String []lines = str.split("\r\n");
 		String str = lines[0];
 		for (int i=0;i<lines.length;i++) {
 			str = (str.length() < lines[i].length()) ? str : lines[i];
 		}
-		c.str = " "+ str;
-		c.count = str.length();
-		return c;
+		s.str = " "+ str;
+		s.count = str.length();
+		return s;
 	}
 }
 
@@ -84,20 +83,19 @@ class MyReader{
 	}
 }
 
+
 public class Wc{
-	private String []in;
 	private String file;
 	private String option;
 	public Wc(String option, String file){
 			this.option = option;
 			this.file = file;
 	}
-	
-	public Counts getWordCount(){
+	public Storage getWordCount(){
 		MyReader r = new MyReader();
 		String text = r.getTextFromFile(file);
 		Counter c = new Counter(text);
-		Counts result = new Counts();
+		Storage result = new Storage();
 		switch(option){
 			case "-l": result = c.count_lines(); result.file = file; break;
 			case "-w": result = c.count_words(); result.file = file; break;
